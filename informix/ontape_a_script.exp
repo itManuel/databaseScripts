@@ -1,0 +1,82 @@
+#!/usr/bin/expect -f
+# Script to perform automatics backup of the logical logs using ontape.
+# Description: This script is invoked by the auto_llogs_ontape_a.sh
+#
+# Author: Leandro Chavarria, 30/06/2005
+# lchavarria@lastminute.com
+# pre-requisite: libgcc, tcl, tk & expect installed
+
+# Ser variables:
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+			  ;# script wasn't run conservatively originally
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+
+set timeout -1
+set env(TERM) vt100
+set INFORMIXDIR "$env(INFORMIXDIR)"
+set INFORMIXSERVER "$env(INFORMIXSERVER)"
+set DEVICEFILE "$env(DEVICEFILE)"
+set DEVICEPATH "$env(DEVICEPATH)"
+set CURRENTLOG "$env(CURRENTLOG)"
+set ARCHIVELOG "$env(ARCHIVELOG)"
+
+# Functions
+
+proc RenameFile {} {
+global DEVICEFILE 
+global DEVICEPATH 
+global ARCHIVELOG
+
+exec /bin/mv $DEVICEPATH/$DEVICEFILE $DEVICEPATH/$ARCHIVELOG\_$DEVICEFILE
+exec /bin/touch $DEVICEPATH/$DEVICEFILE
+exec /bin/chmod 0660 $DEVICEPATH/$DEVICEFILE
+exec /bin/chown informix:informix $DEVICEPATH/$DEVICEFILE
+exec /bin/gzip $DEVICEPATH/$ARCHIVELOG\_$DEVICEFILE
+
+}
+
+# Main
+eval spawn ${INFORMIXDIR}/bin/ontape -a
+if { $spawn_id == 0 } {
+# if it fails exit with error
+exit 1
+}
+
+match_max 100000
+
+expect -re {.*press Return to continue*.} {
+		send -- "\r"
+		}
+
+while { 1 } {
+
+expect {
+	-re {.*could not write log tape*.} {
+		exit 1
+		}
+
+	-re {.*back up the current logical log*.} {
+		send -- "n\r"
+		}
+
+	-re {Please mount tape .* on*.} {
+		RenameFile
+		send -- "n\r"
+		}
+
+	-re {.*Program over*.} {
+		RenameFile
+		break
+		}
+	}
+}
+
+
+expect eof

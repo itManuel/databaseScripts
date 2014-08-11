@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# Startup script for Informix Database Server
+# 
+# description: Informix RDBMS
+# is a SQL database server.
+# processname: oninit
+### BEGIN INIT INFO
+# Provides:          informix
+# Required-Start:    $remote_fs $syslog $named
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start Informix RDBMS
+# Description:       Start Informix RDBMS
+### END INIT INFO
+  
+
+export INFORMIXDIR=/home/informix
+export INFORMIXSERVER=demo_on
+export ONCONFIG=onconfig.blableta
+export INFORMIXSQLHOSTS=sqlhosts.blableta
+  
+
+# Find the name of the script
+NAME=`basename $0`
+  
+
+# For SELinux we need to use 'runuser' not 'su'
+if [ -x /sbin/runuser ]
+then
+	SU=runuser
+else
+	SU=su
+fi
+  
+
+start() {
+	INFORMIX_START=$"Starting ${NAME} service: "
+	$SU informix -c $INFORMIXDIR/bin/oninit
+	ret=$? 
+	if [ $ret -eq 0 ]
+	then
+		echo "$INFORMIX_START Success."
+	else
+		echo "$INFORMIX_START Failed!"
+                exit 1
+	fi
+	echo
+}
+  
+
+stop() {
+	echo -n $"Stopping ${NAME} service: "
+	$SU informix -c "$INFORMIXDIR/bin/onmode -cuky"
+	ret=$?
+	if [ $ret -eq 0 ]
+	then
+		echo "Success."
+	else
+		echo "Failed!"
+		exit 1
+	fi
+        echo
+}
+  
+
+restart() {
+	stop
+	start
+}
+  
+
+case "$1" in
+  
+
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		restart
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+exit 0
