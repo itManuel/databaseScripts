@@ -1,16 +1,4 @@
 #!/bin/ksh
-: '
-Copyright (c) Lastminute  2006 All Rights Reserved.
-check_audit.sh
-25/10/2006
-Mark D. Stock
-Check database message logs for events
-
-11/12/2006
-Mark D. Stock
-Add flag to email subject to indicate when events occurred -- saves reading em all
-
-'
 
 # Display usage message
 usage()
@@ -35,7 +23,7 @@ fi
 PROG="`basename $0 .sh`"
 LOG="/tmp/${PROG}.$$"
 HOST="`hostname`"
-MAILLIST="LMN-DBA-INFORMIX-ALERTS@lastminute.com"
+MAILLIST="you@yourdomain.com"
 #DBSERVERNAME="`onstat -c 2>/dev/null |grep ^DBSERVERNAME |awk '{print $2}'`"
 MSGLOG="`onstat -c 2>/dev/null |grep '^MSGPATH' |awk '{print $2}'`"
 

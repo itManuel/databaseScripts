@@ -89,8 +89,8 @@ esac
 
 # Set defaults
 HOSTNAME="`hostname`"
-DBALIST="mstock|ptorking|arepossi|lrado"
-MAILLIST="LMN-DBA-INFORMIX-ALERT@lastminute.com"
+DBALIST="list|of|database|admins|separated|by|pipe"
+MAILLIST="you@yourdomain.com"
 #H="24"		# Hours in a day (Doesnt work for 7 days)
 H="239 / 10"	# Hours in a day
 D="7"		# Days in a week
@@ -158,10 +158,6 @@ MAILLOG="/INFORMIX/AUDIT/check_audit.email.`date '+%Y%m%d'`"
 echo ""
 #echo "Cut&Paste the following details where shown, to the Service Delivery Meeting Minutes at:"
 echo "Cut&Paste the following details where shown, to the Database Meeting Minutes at:"
-echo ""
-#echo "        http://twiki.lastminute.com/twiki/bin/view/SarbOx/ServiceDeliveryMinutes${MEETDATE}"
-#echo "        http://twiki.lastminute.com/twiki/bin/view/SarbOx/DBALogsReview${MEETDATE}"
-echo "        http://twiki.lastminute.com/twiki/bin/view/Database/DbMeetingMinutes${MINDATE}"
 echo ""
 echo "        1. Replace Name_of_DBA with your name."
 echo "        2. Review the weeks message log events emails and note any exceptions."

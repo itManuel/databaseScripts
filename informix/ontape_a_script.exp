@@ -2,8 +2,6 @@
 # Script to perform automatics backup of the logical logs using ontape.
 # Description: This script is invoked by the auto_llogs_ontape_a.sh
 #
-# Author: Leandro Chavarria, 30/06/2005
-# lchavarria@lastminute.com
 # pre-requisite: libgcc, tcl, tk & expect installed
 
 # Ser variables:

@@ -1,23 +1,14 @@
 #!/bin/ksh
 
-# 12/05/2008 -- Andres Repossi
-# Performs ifx_extentsleft.ksh for objects extents left
-
-# Laura S. Rado 01/07/2010
-# Changed MAILLIST from tech-dba-informix@lastminute.com to tech-dba-informix-alert@lastminute.com
-
-# Manuel Aller 02/09/2010
-# Changed MAILLIST from tech-dba-informix-alert@lastminute.com to LMN-DBA-INFORMIX-ALERT@lastminute.com
-
 
 #set -x
 
 if [ $# -ne 3 ]
 then
-  echo "Param one: IFX SERVER {qatdbs01v2|qatebasket|qareporting} | Param two: CRITICAL_LEVEL | Param three: WARNING_LEVEL"
+  echo "Param one: IFX SERVER | Param two: CRITICAL_LEVEL | Param three: WARNING_LEVEL"
   echo 
   echo "Example:"
-  echo "Run: /usr/dba/scripts/ifx_extentsleft.ksh qatdbs01v2 50 100"
+  echo "Run: /usr/dba/scripts/ifx_extentsleft.ksh yourinstance 50 100"
 
   exit 1
 fi
@@ -26,7 +17,7 @@ INFORMIXSERVER=$1
 CRITICAL_LEVEL=$2
 WARNING_LEVEL=$3
 OUTPUT_FILE=/tmp/`basename $0`.out.$$
-MAILLIST="LMN-DBA-INFORMIX-ALERT@lastminute.com"
+MAILLIST="you@yourdomain.com"
 
 # Set Informix server common environment variables
 . /usr/dba/environ/common_env

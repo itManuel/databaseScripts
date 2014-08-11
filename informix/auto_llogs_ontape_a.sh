@@ -2,8 +2,6 @@
 # Script to perform automatics backup of the logical logs using ontape.                        
 # Description: This script is the one to be invoked by informix in tha ALARMPROGRAM value
 #              of the $ONCONFIG file
-# Author: Leandro Chavarria, 30/06/2005                                                        
-# lchavarria@lastminute.com                                                                    
 # pre-requisite: libgcc, tcl, tk & expect installed
 
 ARG1=$1
