@@ -1,6 +1,7 @@
 #!/bin/bash
 # script to do a full basebackup in old pg versions
 BACKUPDIR=/var/lib/pgsql
+REMOTEDATADIR=/var/lib/pgsql/data
 SERVER=192.168.210.50
 BKPUSER=postgres
 DATE=`date +%Y%m%d`
@@ -11,7 +12,7 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 sleep 1
-(cd $BACKUPDIR ; rm data ; rsync -av $SERVER:/var/lib/pgsql/data $DATE ; ln -s ${DATE}/data data )
+(cd $BACKUPDIR ; rm data ; rsync -av ${SERVER}:${REMOTEDATADIR} $DATE ; ln -s ${DATE}/data data )
 if [ $? != 0 ]; then
 	echo 'error backing up'
 	exit 1
