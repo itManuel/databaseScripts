@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# guarda 2 fechas, una por current_timestamp (funcion de postgres) y la otra con la fecha 'clavada'
-# compara las fechas y tira la cantidad de segundos de diferencia
+# guarda una fecha en el master, y en el slave la compara contra 'current_timestamp'
+# muestra la cantidad de segundos de diferencia
 
 # armo el sql de update:
 if [ $0 -eq 'M' ]; then
