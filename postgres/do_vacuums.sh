@@ -16,16 +16,16 @@ limit 1;"
 
 TABLE=`psql $DATABASE -t -c "$SQL"`
 
-echo $TABLE
+#echo $TABLE
 if [ "X${TABLE}" == "X" ]; then
 	echo 'nothing to do'
 else
 	echo "ready to vacuum ${TABLE}? (S/N)"
 	read a
-	if [ $a -eq "S" ]; then
+	if [ "$a" == "S" ]; then
 		vacuumdb -d $DATABASE -t $TABLE -z
 	else
-		if [ $a -eq "s" ]; then
+		if [ "$a" == "s" ]; then
 			vacuumdb -d $DATABASE -t $TABLE -z
 		fi
 	fi
