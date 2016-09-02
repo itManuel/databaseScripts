@@ -71,16 +71,16 @@ echo "select * from pg_stat_reset();"|psql $DB_NAME > /tmp/${DB_NAME}_stats5; do
 # armo el mail:
 for DB_NAME in $DB_LIST; do 
 echo ${DB_NAME} > /tmp/${DB_NAME}_REPORT
-echo "---------------------------------" >> tmp/${DB_NAME}_REPORT
-echo /tmp/${DB_NAME}_stats1 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats1
-echo /tmp/${DB_NAME}_stats2 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats2
-echo /tmp/${DB_NAME}_stats3 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats3
-echo /tmp/${DB_NAME}_stats4 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats4
-echo /tmp/${DB_NAME}_stats5 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats5
+echo "---------------------------------" >> /tmp/${DB_NAME}_REPORT
+cat /tmp/${DB_NAME}_stats1 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats1
+cat /tmp/${DB_NAME}_stats2 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats2
+cat /tmp/${DB_NAME}_stats3 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats3
+cat /tmp/${DB_NAME}_stats4 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats4
+cat /tmp/${DB_NAME}_stats5 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats5
 done
 
 for DB_NAME in $DB_LIST; do
-echo /tmp/${DB_NAME}_REPORT >> /tmp/pg_mailer_report && rm /tmp/${DB_NAME}_REPORT
+cat /tmp/${DB_NAME}_REPORT >> /tmp/pg_mailer_report && rm /tmp/${DB_NAME}_REPORT
 done
 cat /tmp/pg_mailer_report | mail -s 'reporte status' $MAIL
 
