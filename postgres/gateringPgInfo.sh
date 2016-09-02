@@ -1,5 +1,5 @@
 #!/bin/bash
-# postgresql data collector(c) Manuel Fernando Aller <manuel.aller@infracoop.com.ar>
+# postgresql data collector(c) Manuel Fernando Aller
 # script para analizar lo que pasó en pg y refrescar las estadísticas. Correr una vez por día.
 
 DB_LIST='gps desptaxis'
