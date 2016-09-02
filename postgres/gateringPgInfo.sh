@@ -82,7 +82,7 @@ done
 for DB_NAME in $DB_LIST; do
 echo /tmp/${DB_NAME}_REPORT >> /tmp/pg_mailer_report && rm /tmp/${DB_NAME}_REPORT
 done
-cat /tmp/pg_mailer_report | mailq -s 'reporte status' $MAIL
+cat /tmp/pg_mailer_report | mail -s 'reporte status' $MAIL
 
 rm $LOCK
 if [ $? -eq 0 ]; then
