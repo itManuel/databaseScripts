@@ -3,7 +3,7 @@
 # script para analizar lo que pasó en pg y refrescar las estadísticas. Correr una vez por día.
 
 DB_LIST='gps desptaxis'
-
+MAIL='manuel.aller@gmail.com'
 LOCK=/tmp/gathering_info_pg
 
 
@@ -44,7 +44,7 @@ where
   s.idx_scan < 100000 and c.confrelid is null 
 order by 
   s.idx_scan asc, pg_relation_size(s.relid) desc
-limit 5"|psql > /tmp/${DB_NAME}_stats2; done
+limit 5"|psql $DB_NAME > /tmp/${DB_NAME}_stats2; done
 
 # buffer hit:
 for DB_NAME in $DB_LIST; do 
@@ -53,7 +53,7 @@ echo "SELECT
   sum(heap_blks_hit)  as heap_hit,
   sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio
 FROM 
-  pg_statio_user_tables;"|psql > /tmp/${DB_NAME}_stats3; done
+  pg_statio_user_tables;"|psql $DB_NAME > /tmp/${DB_NAME}_stats3; done
 
 # index cache hit:
 for DB_NAME in $DB_LIST; do 
@@ -62,12 +62,29 @@ echo "SELECT
   sum(idx_blks_hit)  as idx_hit,
   (sum(idx_blks_hit) - sum(idx_blks_read)) / sum(idx_blks_hit) as ratio
 FROM 
-  pg_statio_user_indexes;"|psql > /tmp/${DB_NAME}_stats4; done
+  pg_statio_user_indexes;"|psql $DB_NAME > /tmp/${DB_NAME}_stats4; done
 
 # reset stats:
 for DB_NAME in $DB_LIST; do 
-echo "select * from pg_stat_reset();"|psql > /tmp/${DB_NAME}_stats5; done
+echo "select * from pg_stat_reset();"|psql $DB_NAME > /tmp/${DB_NAME}_stats5; done
 
-if [ rm $LOCK ]; then
+# armo el mail:
+for DB_NAME in $DB_LIST; do 
+echo ${DB_NAME} > /tmp/${DB_NAME}_REPORT
+echo "---------------------------------" >> tmp/${DB_NAME}_REPORT
+echo /tmp/${DB_NAME}_stats1 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats1
+echo /tmp/${DB_NAME}_stats2 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats2
+echo /tmp/${DB_NAME}_stats3 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats3
+echo /tmp/${DB_NAME}_stats4 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats4
+echo /tmp/${DB_NAME}_stats5 >> /tmp/${DB_NAME}_REPORT && rm /tmp/${DB_NAME}_stats5
+done
+
+for DB_NAME in $DB_LIST; do
+echo /tmp/${DB_NAME}_REPORT >> /tmp/pg_mailer_report && rm /tmp/${DB_NAME}_REPORT
+done
+cat /tmp/pg_mailer_report | mailq -s 'reporte status' $MAIL
+
+rm $LOCK
+if [ $? -eq 0 ]; then
 	/usr/bin/logger -t postgres "INFO: end gathering info about pg health"
 fi
