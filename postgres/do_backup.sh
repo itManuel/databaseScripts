@@ -2,7 +2,7 @@
 #
 # simple database script for backup a single database
 #
-DB_NAME=desptaxis
+DB_NAME=database
 HOST_NAME=`uname -n`
 BACKUP_DIR=/DATA/backups
 ARCHIVE_DAYS=20
