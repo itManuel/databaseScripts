@@ -5,7 +5,7 @@
 # bajo.sh: unloads a table to an archive, and has the ability to compress the file generated.
 # accepts parameters, or ask for them: DATABASE, TABLE and COMPRESS(Y/y) flag.
 #
-# (c)2009 manuel fernando aller manolo@lugmen.org.ar
+# (c)2009 manuel fernando aller manuel.aller@gmail.com
 # CHANGELOG:
 # 20090511 v.0.01: inicio, funcionalidades basicas
 #                  initial release, basic functionalities

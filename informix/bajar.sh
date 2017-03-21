@@ -3,7 +3,7 @@
 #
 # bajar.sh: like dbexport, but this don't lock the database. It make a directory with dbschemas and data of one to one table.
 #
-# (c)2009 manuel fernando aller manolo@lugmen.org.ar
+# (c)2009 manuel fernando aller manuel.aller@gmail.com
 # CHANGELOG:
 # 20090511 v.0.01: inicio, funcionalidades basicas
 #                  initial release, basic functionalities
